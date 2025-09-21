@@ -1,0 +1,16 @@
+TITLE:: AirPodsAcc
+summary:: Returns the acceleration of the AirPods
+categories:: UGens>User interaction
+related:: Classes/AirPodsQuat, Classes/AirPodsStatus
+
+DESCRIPTION::
+Returns the acceleration of the AirPods.
+
+CLASSMETHODS::
+
+METHOD:: kr
+Returns a 3 dimensional vector with components x, y, z.
+Take a look at https://developer.apple.com/documentation/coremotion/cmdevicemotion/useracceleration and https://developer.apple.com/documentation/coremotion/cmacceleration.
+Note that its values are not as precise as the rotation quaternion and these values can't be used to track someone in a room.
+
+INSTANCEMETHODS::

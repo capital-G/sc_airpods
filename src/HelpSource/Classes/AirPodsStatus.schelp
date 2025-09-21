@@ -1,0 +1,14 @@
+TITLE:: AirPodsStatus
+summary:: Returns the connection status of AirPods
+categories:: UGens>User interaction
+related:: Classes/AirPodsQuat, Classes/AirPodsAcc
+
+DESCRIPTION::
+Returns the connection status of the AirPods.
+
+CLASSMETHODS::
+
+METHOD:: kr
+Returns 1.0 if connected, 0.0 otherwise.
+
+INSTANCEMETHODS::

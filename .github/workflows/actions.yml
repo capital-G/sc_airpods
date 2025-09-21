@@ -1,0 +1,42 @@
+name: Build Server Extension
+
+on:
+    push:
+        branches: [ main ]
+    pull_request:
+
+jobs:
+    build:
+        runs-on: macos-15
+        steps:
+            - name: Obtain SC sources
+              uses: actions/checkout@v4
+              with:
+                repository: supercollider/supercollider
+                ref: develop
+                path: ./supercollider
+                submodules: recursive
+            - name: Obtain SC AirPods sources
+              uses: actions/checkout@v4
+              with:
+                path: ./sc_airpods
+            - name: Configure
+              run: |
+                cmake \
+                  -G Xcode \
+                  -S . \
+                  -B build \
+                  -DSC_SRC_PATH=$GITHUB_WORKSPACE/supercollider \
+                  -DCMAKE_INSTALL_PREFIX=./install
+              working-directory: ./sc_airpods
+            - name: Build
+              run: cmake --build build --config Release
+              working-directory: ./sc_airpods
+            - name: Run install
+              run: cmake --install build --config Release
+              working-directory: ./sc_airpods
+            - name: Upload archive
+              uses: actions/upload-artifact@v4
+              with:
+                name: "sc_airpods-${{ github.sha }}-universal"
+                path: ${{ github.workspace }}/sc_airpods/install/

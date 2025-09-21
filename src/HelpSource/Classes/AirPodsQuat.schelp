@@ -1,0 +1,16 @@
+TITLE:: AirPodsQuat
+summary:: Returns the quaternion of the AirPods
+categories:: UGens>User interaction
+related:: Classes/AirPodsEuler, Classes/AirPodsAcc, Classes/AirPodsStatus
+
+DESCRIPTION::
+Returns the quaternion of the AirPods.
+See https://developer.apple.com/documentation/coremotion/cmattitude and https://developer.apple.com/documentation/coremotion/cmquaternion
+
+CLASSMETHODS::
+
+METHOD:: kr
+Returns the quaternion (a 4 dimensional vector with components x, y, z, w) of the AirPods.
+Use LINK::Classes/AirPodsEuler:: to obtain the euler angles of the quaternion.
+
+INSTANCEMETHODS::

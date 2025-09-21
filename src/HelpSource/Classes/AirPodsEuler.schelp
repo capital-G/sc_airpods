@@ -1,0 +1,56 @@
+TITLE:: AirPodsEuler
+summary:: Returns the euler angles of the AirPods
+categories:: UGens>User interaction
+related:: Classes/AirPodsQuat, Classes/AirPodsAcc, Classes/AirPodsStatus
+
+DESCRIPTION::
+Returns the euler angels of the AirPods based on the quaternion.
+See https://developer.apple.com/documentation/coremotion/cmattitude,  https://developer.apple.com/documentation/coremotion/cmquaternion and https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles .
+
+CLASSMETHODS::
+
+METHOD:: kr
+Returns a 3 dimensional vector which translates to roll, pitch and yaw.
+This is based on the values obtained from LINK::Classes/AirPodsQuat::.
+
+INSTANCEMETHODS::
+
+EXAMPLES::
+
+A basic spatializer
+
+CODE::
+(
+// click on mouse to calibrate/reset base position
+Ndef(\x, {
+	var eulerRaw = AirPodsEuler.kr;
+	var reset = MouseButton.kr();
+	var eulerReference = Latch.kr(eulerRaw, reset);
+	var euler = eulerRaw - eulerReference;
+	
+	var sig = VarSaw.ar(freq: euler[0].linexp(-pi, pi, 1000, 2000)) * Env.perc(
+		releaseTime: 0.05
+	).ar(gate: Impulse.ar(euler[1].linexp(-pi, pi, 2.0, 30.0)));
+	
+	var yaw = euler[2];
+	
+	var mapper = {|lo, hi, dist=1.0|
+		// todo - also respect roll and pitch
+		yaw.atan2(dist).linexp(-pi, pi, [hi, lo], [lo, hi]);
+	};
+	
+	// filter of head
+	sig = LPF.ar(
+		in: sig,
+		freq: mapper.(1000, 10000),
+	);
+	// exercise: add delay
+	// attenuate
+	sig = sig * mapper.(0.01, 1.0);
+	
+	sig * \amp.kr(0.4);
+}).play;
+)
+
+Ndef(\x).clear;
+::
